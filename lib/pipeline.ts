@@ -4,12 +4,19 @@ import * as actions from '@aws-cdk/aws-codepipeline-actions';
 import * as cdk from '@aws-cdk/core';
 import * as cicd from '@aws-cdk/pipelines';
 import { Application } from './application'
-
+import { Frontend } from './frontend'
 
 export class ApplicationStage extends cdk.Stage {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     new Application(this, 'Application');
+  }
+}
+
+export class FrontendStage extends cdk.Stage {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+    new Frontend(this, 'Frontend');
   }
 }
 
@@ -61,6 +68,7 @@ export class Pipeline extends cdk.Stack {
       }),
     });
 
-    pipeline.addApplicationStage(new ApplicationStage(this, 'Prod'));
+    pipeline.addApplicationStage(new ApplicationStage(this, 'ApplicationProd'));
+    pipeline.addApplicationStage(new FrontendStage(this, 'FrontendProd'));
   }
 }
