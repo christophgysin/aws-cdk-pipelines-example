@@ -17,7 +17,7 @@ class ApiGatewayDomain implements route53.IAliasRecordTarget {
   }
 }
 
-export class Application extends cdk.Stage {
+export class Application extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
     super(scope, id, props);
 
