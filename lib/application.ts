@@ -36,12 +36,12 @@ export class Application extends cdk.Stage {
 
     const apiDomainName = `api.${zoneName}`;
 
+    /*
     const certificate = new acm.DnsValidatedCertificate(this, 'Certificate', {
       domainName: apiDomainName,
       hostedZone,
     });
 
-    /*
     const domainName = new apigwv2.DomainName(this, 'DomainName', {
       domainName: apiDomainName,
       certificate,
