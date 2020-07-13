@@ -41,12 +41,12 @@ export class Application extends cdk.Stage {
       hostedZone,
     });
 
+    /*
     const domainName = new apigwv2.DomainName(this, 'DomainName', {
       domainName: apiDomainName,
       certificate,
     });
 
-    /*
     const api = new apigwv2.HttpApi(this, 'HttpApi', {
       defaultIntegration: new apigwv2.LambdaProxyIntegration({
         handler: new lambda.NodejsFunction(this, 'api'),
