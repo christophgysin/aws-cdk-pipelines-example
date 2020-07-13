@@ -46,6 +46,7 @@ export class Application extends cdk.Stage {
       certificate,
     });
 
+    /*
     const api = new apigwv2.HttpApi(this, 'HttpApi', {
       defaultIntegration: new apigwv2.LambdaProxyIntegration({
         handler: new lambda.NodejsFunction(this, 'api'),
@@ -67,5 +68,6 @@ export class Application extends cdk.Stage {
       recordName: 'api',
       target: route53.RecordTarget.fromAlias(new ApiGatewayDomain(domainName)),
     });
+    */
   }
 }
