@@ -67,12 +67,12 @@ export class Api extends cdk.Stack {
         mappingKey: '',
       },
     });
+    */
 
     new route53.ARecord(this, 'AliasRecord', {
       zone: hostedZone,
       recordName: 'api',
-      target: route53.RecordTarget.fromAlias(new ApiGatewayDomain(domainName)),
+      target: route53.RecordTarget.fromAlias(new ApiGatewayDomain(customDomain)),
     });
-    */
   }
 }
