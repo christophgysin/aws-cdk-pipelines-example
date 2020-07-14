@@ -5,7 +5,8 @@ import * as route53 from '@aws-cdk/aws-route53';
 import * as targets from '@aws-cdk/aws-route53-targets';
 import * as cdk from '@aws-cdk/core';
 
-// TODO: not supported yet
+// TODO: Remove this once it is supported upstream:
+// https://github.com/aws/aws-cdk/issues/8941
 class ApiGatewayDomain implements route53.IAliasRecordTarget {
   constructor(private readonly domainName: apigwv2.IDomainName) { }
 
