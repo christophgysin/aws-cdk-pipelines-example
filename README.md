@@ -23,19 +23,23 @@ $ npm run deploy Pipeline
 
 ### Repository
 
-Contains a CodeCommit repository, needed for bootstrapping.
+A CodeCommit repository, needed for bootstrapping.
 
 ### Pipeline
 
-Contains the Pipeline that updates itself, deploys assets and all Application
+The Pipeline that updates itself, deploys assets and all Application
 stacks.
 
 ### Application
 
-Contains a simple serverless API, accessible on a custom domain.
+Contains two stacks:
 
-### Frontend
+#### API
 
-Contains a CloudFront distribution that serves the contents of the dist/ folder
+A simple serverless API, accessible on a custom domain.
+
+#### Frontend
+
+A CloudFront distribution that serves the contents of the dist/ folder
 in this repository from an S3 bucket via an OriginAccessIdentity, and
 automatically invalidates the distribution on updates.

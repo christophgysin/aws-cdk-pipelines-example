@@ -17,7 +17,7 @@ class ApiGatewayDomain implements route53.IAliasRecordTarget {
   }
 }
 
-export class Application extends cdk.Stack {
+export class Api extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
     super(scope, id, props);
 
@@ -49,7 +49,7 @@ export class Application extends cdk.Stack {
     /*
     const api = new apigwv2.HttpApi(this, 'HttpApi', {
       defaultIntegration: new apigwv2.LambdaProxyIntegration({
-        handler: new lambda.NodejsFunction(this, 'api'),
+        handler: new lambda.NodejsFunction(this, 'handler'),
       }),
       defaultDomainMapping: {
         domainName,
