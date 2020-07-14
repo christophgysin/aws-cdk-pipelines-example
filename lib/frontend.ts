@@ -14,7 +14,7 @@ export class Frontend extends cdk.Stack {
     const zoneName = 'christophgys.in';
     const domainName = zoneName;
 
-    /*
+    /* TODO: not supported yet: https://github.com/aws/aws-cdk/issues/8905
     const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
       domainName: zoneName,
     });

@@ -23,7 +23,7 @@ export class Application extends cdk.Stack {
 
     const zoneName = 'christophgys.in';
 
-    /*
+    /* TODO: not supported yet: https://github.com/aws/aws-cdk/issues/8905
     const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
       domainName: zoneName,
     });
