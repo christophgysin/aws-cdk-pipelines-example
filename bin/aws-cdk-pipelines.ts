@@ -11,6 +11,10 @@ const hostedZoneName = 'christophgys.in';
 const apiDomain = 'api.christophgys.in';
 const websiteDomain = 'christophgys.in';
 
+const repositoryProps = {
+  repositoryName: 'cdk-pipeline-example',
+};
+
 const apiProps = {
   hostedZoneId,
   hostedZoneName,
@@ -24,10 +28,13 @@ const frontendProps = {
 };
 
 const app = new cdk.App();
-new Repository(app, 'Repository');
+new Repository(app, 'Repository', repositoryProps);
 new Pipeline(app, 'Pipeline', {
-  apiProps,
-  frontendProps,
+  repositoryProps,
+  applicationProps: {
+    apiProps,
+    frontendProps,
+  },
 });
 new Api(app, 'Api', apiProps);
 new Frontend(app, 'Frontend', frontendProps);

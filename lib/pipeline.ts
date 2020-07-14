@@ -3,6 +3,7 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as actions from '@aws-cdk/aws-codepipeline-actions';
 import * as cdk from '@aws-cdk/core';
 import * as cicd from '@aws-cdk/pipelines';
+import { RepositoryProps } from './repository'
 import { Api, ApiProps } from './api'
 import { Frontend, FrontendProps } from './frontend'
 
@@ -15,7 +16,7 @@ export class ApplicationStage extends cdk.Stage {
   readonly apiUrl: cdk.CfnOutput;
   readonly websiteUrl: cdk.CfnOutput;
 
-  constructor(scope: cdk.Construct, id: string, props: ApplicationProps ) {
+  constructor(scope: cdk.Construct, id: string, props: ApplicationProps) {
     super(scope, id, props);
 
     const {
@@ -31,20 +32,22 @@ export class ApplicationStage extends cdk.Stage {
   }
 }
 
+export interface PipelineProps extends cdk.StackProps {
+  repositoryProps: RepositoryProps
+  applicationProps: ApplicationProps
+}
+
 export class Pipeline extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: ApplicationProps) {
+  constructor(scope: cdk.Construct, id: string, props: PipelineProps) {
     super(scope, id, props);
 
-    /*
-    const repository = new codecommit.Repository(this, 'Repository', {
-      repositoryName: 'cdk-pipeline-example',
-    });
-    new cdk.CfnOutput(this, 'RepoUrl', {
-      value: repository.repositoryCloneUrlSsh,
-    });
-    */
+    const {
+      repositoryProps: {
+        repositoryName,
+      },
+      applicationProps,
+    } = props;
 
-    const repositoryName = 'cdk-pipeline-example';
     const repository = codecommit.Repository.fromRepositoryName(this, 'Repository', repositoryName);
 
     const sourceArtifact = new codepipeline.Artifact();
@@ -74,13 +77,14 @@ export class Pipeline extends cdk.Stack {
       synthAction: cicd.SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
         cloudAssemblyArtifact,
+
         buildCommand: 'npm run build',
         synthCommand: 'npx cdk synth --verbose',
       }),
     });
 
     const prodStage = pipeline.addStage('Prod');
-    const application = new ApplicationStage(this, 'Application', props)
+    const application = new ApplicationStage(this, 'Application', applicationProps)
     prodStage.addApplication(application)
     prodStage.addActions(new cicd.ShellScriptAction({
       actionName: 'SmokeTest',
