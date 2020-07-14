@@ -71,13 +71,11 @@ export class Api extends cdk.Stack {
           code: lambda.Code.fromInline(lambdaCode),
         }),
       }),
-      /*
       defaultDomainMapping: {
         domainName: customDomain,
         // TODO: should be '/' according to docs. Bug?
         mappingKey: '',
       },
-      */
     });
 
     new route53.ARecord(this, 'AliasRecord', {
