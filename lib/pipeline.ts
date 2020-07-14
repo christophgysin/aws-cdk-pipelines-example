@@ -64,7 +64,7 @@ export class Pipeline extends cdk.Stack {
         sourceArtifact,
         cloudAssemblyArtifact,
         buildCommand: 'npm run build',
-        synthCommand: 'npm run cdk -- synth --verbose',
+        synthCommand: 'npx cdk synth --verbose',
       }),
     });
 

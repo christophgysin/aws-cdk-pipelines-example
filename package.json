@@ -5,10 +5,10 @@
     "aws-cdk-pipelines": "bin/aws-cdk-pipelines.js"
   },
   "scripts": {
+    "bootstrap": "env CDK_NEW_BOOTSTRAP=1 npx cdk bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk",
     "build+synth": "tsc && cdk synth",
     "build+deploy": "tsc && cdk deploy"
   },
