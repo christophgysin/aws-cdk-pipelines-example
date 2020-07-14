@@ -39,24 +39,6 @@ export class Frontend extends cdk.Stack {
     });
 
     const oai = new cloudfront.OriginAccessIdentity(this, 'OriginAccessIdentity');
-
-    websiteBucket.addToResourcePolicy(new iam.PolicyStatement({
-      principals: [
-        new iam.CanonicalUserPrincipal(oai.cloudFrontOriginAccessIdentityS3CanonicalUserId),
-      ],
-      actions: [
-        's3:GetBucket*',
-        's3:GetObject*',
-        's3:List*',
-      ],
-      effect: iam.Effect.ALLOW,
-      resources: [
-        websiteBucket.bucketArn,
-        websiteBucket.arnForObjects('*'),
-      ],
-    }));
-
-    /*
     const distribution = new cloudfront.CloudFrontWebDistribution(this, 'Distribution', {
       defaultRootObject: 'index.html',
       errorConfigurations: [
@@ -103,6 +85,21 @@ export class Frontend extends cdk.Stack {
       zone: hostedZone,
       target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
     });
-    */
+
+    websiteBucket.addToResourcePolicy(new iam.PolicyStatement({
+      principals: [
+        new iam.CanonicalUserPrincipal(oai.cloudFrontOriginAccessIdentityS3CanonicalUserId),
+      ],
+      actions: [
+        's3:GetBucket*',
+        's3:GetObject*',
+        's3:List*',
+      ],
+      effect: iam.Effect.ALLOW,
+      resources: [
+        websiteBucket.bucketArn,
+        websiteBucket.arnForObjects('*'),
+      ],
+    }));
   }
 }
