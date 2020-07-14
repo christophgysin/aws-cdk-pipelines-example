@@ -5,14 +5,26 @@ import { Repository } from '../lib/repository';
 import { Pipeline } from '../lib/pipeline';
 import { Api } from '../lib/api';
 import { Frontend } from '../lib/frontend';
+import { config } from 'dotenv';
 
-const hostedZoneId = 'Z05148064CT4NI5ZG6SS';
-const hostedZoneName = 'christophgys.in';
-const apiDomain = 'api.christophgys.in';
-const websiteDomain = 'christophgys.in';
+config();
+
+const {
+  HOSTED_ZONE_ID,
+  HOSTEDA_ZONE_NAME,
+  API_DOMAIN,
+  WEBSITE_DOMAIN,
+  REPOSITORY_NAME,
+} = process.env;
+
+const hostedZoneId = HOSTED_ZONE_ID!;
+const hostedZoneName = HOSTEDA_ZONE_NAME!;
+const apiDomain = API_DOMAIN!;
+const websiteDomain = WEBSITE_DOMAIN!;
+const repositoryName = REPOSITORY_NAME!;
 
 const repositoryProps = {
-  repositoryName: 'cdk-pipeline-example',
+  repositoryName,
 };
 
 const apiProps = {
