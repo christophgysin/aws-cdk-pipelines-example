@@ -57,17 +57,14 @@ export class Pipeline extends cdk.Stack {
         sourceArtifact,
         cloudAssemblyArtifact,
         buildCommand: 'npm run build',
+        synthCommand: 'npm run cdk -- synth --verbose',
       }),
     });
 
-    const prodStage = pipeline.addApplicationStage(new ApplicationStage(this, 'Prod', {
-      /*
-      env: {
-        account: '489660384731',
-        region: 'eu-west-1',
-      }
-      */
-    }));
-    prodStage.addManualApprovalAction();
+    const prodStage = pipeline.addStage('Prod');
+    // prodStage.addManualApprovalAction();
+    prodStage.addApplication(new ApplicationStage(this, 'ApplicationStage'), {
+      manualApprovals: true,
+    });
   }
 }
