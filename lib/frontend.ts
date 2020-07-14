@@ -31,14 +31,25 @@ export class Frontend extends cdk.Stack {
       hostedZone,
     });
 
-    const websiteBucket = new s3.Bucket(this, 'WebsiteBucket');
-
-    new s3deploy.BucketDeployment(this, 'DeployWebsite', {
-      sources: [s3deploy.Source.asset('./dist')],
-      destinationBucket: websiteBucket,
-    });
-
     const oai = new cloudfront.OriginAccessIdentity(this, 'OriginAccessIdentity');
+
+    const websiteBucket = new s3.Bucket(this, 'WebsiteBucket');
+    websiteBucket.addToResourcePolicy(new iam.PolicyStatement({
+      principals: [
+        new iam.CanonicalUserPrincipal(oai.cloudFrontOriginAccessIdentityS3CanonicalUserId),
+      ],
+      actions: [
+        's3:GetBucket*',
+        's3:GetObject*',
+        's3:List*',
+      ],
+      effect: iam.Effect.ALLOW,
+      resources: [
+        websiteBucket.bucketArn,
+        websiteBucket.arnForObjects('*'),
+      ],
+    }));
+
     const distribution = new cloudfront.CloudFrontWebDistribution(this, 'Distribution', {
       defaultRootObject: 'index.html',
       errorConfigurations: [
@@ -81,25 +92,15 @@ export class Frontend extends cdk.Stack {
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     });
 
+    new s3deploy.BucketDeployment(this, 'DeployWebsite', {
+      sources: [s3deploy.Source.asset('./dist')],
+      destinationBucket: websiteBucket,
+      distribution,
+    });
+
     new route53.ARecord(this, 'AliasRecord', {
       zone: hostedZone,
       target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
     });
-
-    websiteBucket.addToResourcePolicy(new iam.PolicyStatement({
-      principals: [
-        new iam.CanonicalUserPrincipal(oai.cloudFrontOriginAccessIdentityS3CanonicalUserId),
-      ],
-      actions: [
-        's3:GetBucket*',
-        's3:GetObject*',
-        's3:List*',
-      ],
-      effect: iam.Effect.ALLOW,
-      resources: [
-        websiteBucket.bucketArn,
-        websiteBucket.arnForObjects('*'),
-      ],
-    }));
   }
 }
