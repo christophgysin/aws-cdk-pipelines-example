@@ -1,3 +1,4 @@
+import * as path from 'path'
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as apigwv2 from '@aws-cdk/aws-apigatewayv2';
 import * as lambda from '@aws-cdk/aws-lambda-nodejs';
@@ -56,18 +57,18 @@ export class Api extends cdk.Stack {
       value: `https://${domainName}`,
     });
 
-    /*
     const api = new apigwv2.HttpApi(this, 'HttpApi', {
       defaultIntegration: new apigwv2.LambdaProxyIntegration({
-        handler: new lambda.NodejsFunction(this, 'handler'),
+        handler: new lambda.NodejsFunction(this, 'NodejsFunction', {
+          entry: path.resolve(__dirname, 'api.handler.ts'),
+        }),
       }),
       defaultDomainMapping: {
-        domainName,
+        domainName: customDomain,
         // TODO: should be '/' according to docs. Bug?
         mappingKey: '',
       },
     });
-    */
 
     new route53.ARecord(this, 'AliasRecord', {
       zone: hostedZone,
