@@ -26,6 +26,7 @@ export class Frontend extends cdk.Stack {
     });
 
     const certificate = new acm.DnsValidatedCertificate(this, 'Certificate', {
+      region: 'us-east-1',
       domainName,
       hostedZone,
     });
