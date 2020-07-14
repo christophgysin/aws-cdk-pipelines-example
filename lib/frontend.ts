@@ -7,21 +7,24 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as cdk from '@aws-cdk/core';
 
+export interface FrontendProps extends cdk.StageProps {
+  hostedZoneId: string
+  hostedZoneName: string
+  domainName: string
+}
+
 export class Frontend extends cdk.Stack {
   readonly websiteUrl: cdk.CfnOutput;
 
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
+  constructor(scope: cdk.Construct, id: string, props: FrontendProps) {
     super(scope, id, props);
 
-    const zoneName = 'christophgys.in';
-    const domainName = zoneName;
+    const {
+      hostedZoneId,
+      hostedZoneName: zoneName,
+      domainName,
+    } = props;
 
-    /* TODO: not supported yet: https://github.com/aws/aws-cdk/issues/8905
-    const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
-      domainName: zoneName,
-    });
-    */
-    const hostedZoneId = 'Z05148064CT4NI5ZG6SS';
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', {
       zoneName,
       hostedZoneId,
@@ -106,7 +109,6 @@ export class Frontend extends cdk.Stack {
     });
 
     this.websiteUrl = new cdk.CfnOutput(this, 'WebsiteUrl', {
-      // value: api.url!,
       value: `https://${domainName}`,
     });
   }

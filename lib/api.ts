@@ -17,40 +17,42 @@ class ApiGatewayDomain implements route53.IAliasRecordTarget {
   }
 }
 
+export interface ApiProps extends cdk.StageProps {
+  hostedZoneId: string
+  hostedZoneName: string
+  domainName: string
+}
+
 export class Api extends cdk.Stack {
   readonly apiUrl: cdk.CfnOutput;
 
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
+  constructor(scope: cdk.Construct, id: string, props: ApiProps) {
     super(scope, id, props);
 
-    const zoneName = 'christophgys.in';
+    const {
+      hostedZoneId,
+      hostedZoneName: zoneName,
+      domainName,
+    } = props;
 
-    /* TODO: not supported yet: https://github.com/aws/aws-cdk/issues/8905
-    const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
-      domainName: zoneName,
-    });
-    */
-    const hostedZoneId = 'Z05148064CT4NI5ZG6SS';
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', {
       zoneName,
       hostedZoneId,
     });
 
-    const apiDomainName = `api.${zoneName}`;
-
     const certificate = new acm.DnsValidatedCertificate(this, 'Certificate', {
-      domainName: apiDomainName,
+      domainName,
       hostedZone,
     });
 
-    const domainName = new apigwv2.DomainName(this, 'DomainName', {
-      domainName: apiDomainName,
+    const customDomain = new apigwv2.DomainName(this, 'DomainName', {
+      domainName,
       certificate,
     });
 
     this.apiUrl = new cdk.CfnOutput(this, 'ApiUrl', {
       // value: api.url!,
-      value: `https://${apiDomainName}`,
+      value: `https://${domainName}`,
     });
 
     /*

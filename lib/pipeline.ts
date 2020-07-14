@@ -3,24 +3,36 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as actions from '@aws-cdk/aws-codepipeline-actions';
 import * as cdk from '@aws-cdk/core';
 import * as cicd from '@aws-cdk/pipelines';
-import { Api } from './api'
-import { Frontend } from './frontend'
+import { Api, ApiProps } from './api'
+import { Frontend, FrontendProps } from './frontend'
+
+export interface ApplicationProps extends cdk.StackProps {
+  apiProps: ApiProps
+  frontendProps: FrontendProps
+}
 
 export class ApplicationStage extends cdk.Stage {
   readonly apiUrl: cdk.CfnOutput;
   readonly websiteUrl: cdk.CfnOutput;
 
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props: ApplicationProps ) {
     super(scope, id, props);
-    const api = new Api(this, 'Api');
+
+    const {
+      apiProps,
+      frontendProps,
+    } = props;
+
+    const api = new Api(this, 'Api', apiProps);
     this.apiUrl = api.apiUrl;
-    const frontend = new Frontend(this, 'Frontend');
+
+    const frontend = new Frontend(this, 'Frontend', frontendProps);
     this.websiteUrl = frontend.websiteUrl;
   }
 }
 
 export class Pipeline extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props: ApplicationProps) {
     super(scope, id, props);
 
     /*
@@ -68,7 +80,7 @@ export class Pipeline extends cdk.Stack {
     });
 
     const prodStage = pipeline.addStage('Prod');
-    const application = new ApplicationStage(this, 'Application')
+    const application = new ApplicationStage(this, 'Application', props)
     prodStage.addApplication(application)
     prodStage.addActions(new cicd.ShellScriptAction({
       actionName: 'SmokeTest',
