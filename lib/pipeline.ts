@@ -61,10 +61,6 @@ export class Pipeline extends cdk.Stack {
       }),
     });
 
-    const prodStage = pipeline.addStage('Prod');
-    // prodStage.addManualApprovalAction();
-    prodStage.addApplication(new ApplicationStage(this, 'ApplicationStage'), {
-      manualApprovals: true,
-    });
+    pipeline.addApplicationStage(new ApplicationStage(this, 'Prod'));
   }
 }
