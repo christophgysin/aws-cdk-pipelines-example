@@ -68,6 +68,18 @@ export class Pipeline extends cdk.Stack {
     });
 
     const prodStage = pipeline.addStage('Prod');
-    prodStage.addApplication(new ApplicationStage(this, 'Application'))
+    const application = new ApplicationStage(this, 'Application')
+    prodStage.addApplication(application)
+    prodStage.addActions(new cicd.ShellScriptAction({
+      actionName: 'SmokeTest',
+      commands: [
+        'curl -Ssf $WEBSITE_URL',
+        'curl -Ssf $API_URL',
+      ],
+      useOutputs: {
+        API_URL: pipeline.stackOutput(application.apiUrl),
+        WEBSITE_URL: pipeline.stackOutput(application.websiteUrl),
+      },
+    }));
   }
 }
