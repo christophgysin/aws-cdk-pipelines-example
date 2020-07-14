@@ -7,10 +7,15 @@ import { Api } from './api'
 import { Frontend } from './frontend'
 
 export class ApplicationStage extends cdk.Stage {
+  readonly apiUrl: cdk.CfnOutput;
+  readonly websiteUrl: cdk.CfnOutput;
+
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    new Api(this, 'Api');
-    new Frontend(this, 'Frontend');
+    const api = new Api(this, 'Api');
+    this.apiUrl = api.apiUrl;
+    const frontend = new Frontend(this, 'Frontend');
+    this.websiteUrl = frontend.websiteUrl;
   }
 }
 

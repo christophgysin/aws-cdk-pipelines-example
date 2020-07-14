@@ -18,6 +18,8 @@ class ApiGatewayDomain implements route53.IAliasRecordTarget {
 }
 
 export class Api extends cdk.Stack {
+  readonly apiUrl: cdk.CfnOutput;
+
   constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
     super(scope, id, props);
 
@@ -46,6 +48,11 @@ export class Api extends cdk.Stack {
       certificate,
     });
 
+    this.apiUrl = new cdk.CfnOutput(this, 'ApiUrl', {
+      // value: api.url!,
+      value: `https://${apiDomainName}`,
+    });
+
     /*
     const api = new apigwv2.HttpApi(this, 'HttpApi', {
       defaultIntegration: new apigwv2.LambdaProxyIntegration({
@@ -56,11 +63,6 @@ export class Api extends cdk.Stack {
         // TODO: should be '/' according to docs. Bug?
         mappingKey: '',
       },
-    });
-
-    new cdk.CfnOutput(this, 'ApiUrl', {
-      // value: api.url!,
-      value: `https://${apiDomainName}`,
     });
 
     new route53.ARecord(this, 'AliasRecord', {

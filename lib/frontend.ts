@@ -8,6 +8,8 @@ import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as cdk from '@aws-cdk/core';
 
 export class Frontend extends cdk.Stack {
+  readonly websiteUrl: cdk.CfnOutput;
+
   constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
     super(scope, id, props);
 
@@ -101,6 +103,11 @@ export class Frontend extends cdk.Stack {
     new route53.ARecord(this, 'AliasRecord', {
       zone: hostedZone,
       target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
+    });
+
+    this.websiteUrl = new cdk.CfnOutput(this, 'WebsiteUrl', {
+      // value: api.url!,
+      value: `https://${domainName}`,
     });
   }
 }
