@@ -41,7 +41,6 @@ export class Application extends cdk.Stack {
       hostedZone,
     });
 
-    /*
     const domainName = new apigwv2.DomainName(this, 'DomainName', {
       domainName: apiDomainName,
       certificate,
@@ -58,8 +57,11 @@ export class Application extends cdk.Stack {
       },
     });
 
+    new cdk.CfnOutput(this, 'ApiGwUrl', {
+      value: api.url!,
+    });
+
     new cdk.CfnOutput(this, 'ApiUrl', {
-      // value: api.url!,
       value: `https://${apiDomainName}`,
     });
 
@@ -68,6 +70,5 @@ export class Application extends cdk.Stack {
       recordName: 'api',
       target: route53.RecordTarget.fromAlias(new ApiGatewayDomain(domainName)),
     });
-    */
   }
 }
