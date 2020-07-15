@@ -11,14 +11,14 @@ config();
 
 const {
   HOSTED_ZONE_ID,
-  HOSTEDA_ZONE_NAME,
+  HOSTED_ZONE_NAME,
   API_DOMAIN,
   WEBSITE_DOMAIN,
   REPOSITORY_NAME,
 } = process.env;
 
 const hostedZoneId = HOSTED_ZONE_ID!;
-const hostedZoneName = HOSTEDA_ZONE_NAME!;
+const hostedZoneName = HOSTED_ZONE_NAME!;
 const apiDomain = API_DOMAIN!;
 const websiteDomain = WEBSITE_DOMAIN!;
 const repositoryName = REPOSITORY_NAME!;
