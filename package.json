@@ -6,13 +6,11 @@
   },
   "scripts": {
     "bootstrap": "env CDK_NEW_BOOTSTRAP=1 npx cdk bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess",
-    "build": "tsc && npm run parcel build website/index.html",
-    "parcel": "docker run -v $PWD:/var/task $(docker build -q node_modules/@aws-cdk/aws-lambda-nodejs/parcel) parcel",
-    "serve": "npm run parcel serve website/index.html",
+    "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "build+synth": "npm run build && cdk synth",
-    "build+deploy": "npm run build && cdk deploy"
+    "build+synth": "tsc && cdk synth",
+    "build+deploy": "tsc && cdk deploy"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.51.0",
