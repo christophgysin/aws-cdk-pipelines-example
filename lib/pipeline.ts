@@ -80,6 +80,9 @@ export class Pipeline extends cdk.Stack {
 
         buildCommand: 'npm run build',
         synthCommand: 'npx cdk synth --verbose',
+        environment: {
+          privileged: true,
+        },
       }),
     });
 
