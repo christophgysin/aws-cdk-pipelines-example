@@ -101,6 +101,8 @@ export class Frontend extends cdk.Stack {
       sources: [s3deploy.Source.asset('./dist')],
       destinationBucket: websiteBucket,
       distribution,
+      distributionPaths: ['index.html'],
+      prune: false,
     });
 
     new route53.ARecord(this, 'AliasRecord', {
