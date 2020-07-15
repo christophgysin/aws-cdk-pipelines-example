@@ -4,6 +4,9 @@
   "bin": {
     "aws-cdk-pipelines": "bin/aws-cdk-pipelines.js"
   },
+  "browserslist": [
+    "since 2017-06"
+  ],
   "scripts": {
     "bootstrap": "env CDK_NEW_BOOTSTRAP=1 npx cdk bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess",
     "build": "tsc && npm run parcel build website/index.html",
