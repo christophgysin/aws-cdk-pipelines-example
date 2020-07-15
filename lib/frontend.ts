@@ -101,7 +101,7 @@ export class Frontend extends cdk.Stack {
       sources: [s3deploy.Source.asset('./dist')],
       destinationBucket: websiteBucket,
       distribution,
-      distributionPaths: ['index.html'],
+      distributionPaths: ['/index.html'],
       prune: false,
     });
 
