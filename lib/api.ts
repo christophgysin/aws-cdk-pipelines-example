@@ -1,8 +1,7 @@
 import * as path from 'path'
-import * as fs from 'fs'
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as apigwv2 from '@aws-cdk/aws-apigatewayv2';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambda from '@aws-cdk/aws-lambda-nodejs';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as targets from '@aws-cdk/aws-route53-targets';
 import * as cdk from '@aws-cdk/core';
@@ -60,17 +59,10 @@ export class Api extends cdk.Stack {
       value: `https://${domainName}`,
     });
 
-    const lambdaFile = path.resolve(__dirname, 'api.handler.js');
-    const lambdaCode = fs.readFileSync(lambdaFile, 'utf-8');
-
     const api = new apigwv2.HttpApi(this, 'HttpApi', {
       defaultIntegration: new apigwv2.LambdaProxyIntegration({
-        // TODO: Doesn't work in pipeline. Bug?
-        // handler: new lambda.NodejsFunction(this, 'handler')
-        handler: new lambda.Function(this, 'Function', {
-          runtime: lambda.Runtime.NODEJS_12_X,
-          handler: 'index.handler',
-          code: lambda.Code.fromInline(lambdaCode),
+        handler: new lambda.NodejsFunction(this, 'NodejsFunction', {
+          entry: path.resolve(__dirname, 'api.handler.ts'),
           environment: {
             ALLOWED_ORIGIN: allowedOrigin,
           },
