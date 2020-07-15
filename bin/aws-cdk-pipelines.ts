@@ -19,6 +19,7 @@ const apiProps = {
   hostedZoneId,
   hostedZoneName,
   domainName: apiDomain,
+  allowedOrigin: websiteDomain,
 };
 
 const frontendProps = {

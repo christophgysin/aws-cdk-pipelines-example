@@ -24,6 +24,7 @@ export interface ApiProps extends cdk.StageProps {
   hostedZoneId: string
   hostedZoneName: string
   domainName: string
+  allowedOrigin: string
 }
 
 export class Api extends cdk.Stack {
@@ -36,6 +37,7 @@ export class Api extends cdk.Stack {
       hostedZoneId,
       hostedZoneName: zoneName,
       domainName,
+      allowedOrigin,
     } = props;
 
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', {
@@ -69,6 +71,9 @@ export class Api extends cdk.Stack {
           runtime: lambda.Runtime.NODEJS_12_X,
           handler: 'index.handler',
           code: lambda.Code.fromInline(lambdaCode),
+          environment: {
+            ALLOWED_ORIGIN: allowedOrigin,
+          },
         }),
       }),
       defaultDomainMapping: {
