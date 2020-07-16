@@ -3,8 +3,7 @@ import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import { Repository } from '../lib/repository';
 import { Pipeline } from '../lib/pipeline';
-import { Api } from '../lib/api';
-import { Frontend } from '../lib/frontend';
+import { Application } from '../lib/application';
 import { config } from 'dotenv';
 
 config();
@@ -27,27 +26,17 @@ const repositoryProps = {
   repositoryName,
 };
 
-const apiProps = {
+const applicationProps = {
   hostedZoneId,
   hostedZoneName,
-  domainName: apiDomain,
-  allowedOrigin: `https://${websiteDomain}`,
-};
-
-const frontendProps = {
-  hostedZoneId,
-  hostedZoneName,
-  domainName: websiteDomain,
+  apiDomain,
+  websiteDomain,
 };
 
 const app = new cdk.App();
 new Repository(app, 'Repository', repositoryProps);
+new Application(app, 'Application', applicationProps)
 new Pipeline(app, 'Pipeline', {
   repositoryProps,
-  applicationProps: {
-    apiProps,
-    frontendProps,
-  },
+  applicationProps,
 });
-new Api(app, 'Api', apiProps);
-new Frontend(app, 'Frontend', frontendProps);

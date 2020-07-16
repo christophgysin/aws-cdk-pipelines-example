@@ -4,31 +4,15 @@ import * as actions from '@aws-cdk/aws-codepipeline-actions';
 import * as cdk from '@aws-cdk/core';
 import * as cicd from '@aws-cdk/pipelines';
 import { RepositoryProps } from './repository'
-import { Api, ApiProps } from './api'
-import { Frontend, FrontendProps } from './frontend'
-
-export interface ApplicationProps extends cdk.StackProps {
-  apiProps: ApiProps
-  frontendProps: FrontendProps
-}
+import { Application, ApplicationProps } from './application'
 
 export class ApplicationStage extends cdk.Stage {
-  readonly apiUrl: cdk.CfnOutput;
-  readonly websiteUrl: cdk.CfnOutput;
+  readonly application: Application
 
   constructor(scope: cdk.Construct, id: string, props: ApplicationProps) {
     super(scope, id, props);
 
-    const {
-      apiProps,
-      frontendProps,
-    } = props;
-
-    const api = new Api(this, 'Api', apiProps);
-    this.apiUrl = api.apiUrl;
-
-    const frontend = new Frontend(this, 'Frontend', frontendProps);
-    this.websiteUrl = frontend.websiteUrl;
+    this.application = new Application(this, 'Application', props);
   }
 }
 
@@ -87,8 +71,10 @@ export class Pipeline extends cdk.Stack {
     });
 
     const prodStage = pipeline.addStage('Prod');
-    const application = new ApplicationStage(this, 'Application', applicationProps)
-    prodStage.addApplication(application)
+    const prodApplication = new ApplicationStage(this, 'Application', {
+      ...applicationProps,
+    })
+    prodStage.addApplication(prodApplication)
 
     const testStage = pipeline.addStage('SmokeTest');
     testStage.addActions(new cicd.ShellScriptAction({
@@ -98,8 +84,8 @@ export class Pipeline extends cdk.Stack {
         'curl -Ssf $API_URL',
       ],
       useOutputs: {
-        API_URL: pipeline.stackOutput(application.apiUrl),
-        WEBSITE_URL: pipeline.stackOutput(application.websiteUrl),
+        API_URL: pipeline.stackOutput(prodApplication.application.apiUrl),
+        WEBSITE_URL: pipeline.stackOutput(prodApplication.application.websiteUrl),
       },
     }));
   }
