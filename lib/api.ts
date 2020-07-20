@@ -83,6 +83,9 @@ export class Api extends cdk.Stack {
       },
     });
 
+    // TODO: dependency not added by CDK. Bug?
+    api.node.addDependency(customDomain)
+
     new route53.ARecord(this, 'AliasRecord', {
       zone: hostedZone,
       recordName: 'api',
