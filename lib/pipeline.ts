@@ -6,13 +6,17 @@ import * as cicd from '@aws-cdk/pipelines';
 import { RepositoryProps } from './repository'
 import { Application, ApplicationProps } from './application'
 
+interface ApplicationStageProps extends cdk.StageProps {
+  applicationProps: ApplicationProps
+}
+
 export class ApplicationStage extends cdk.Stage {
   readonly application: Application
 
-  constructor(scope: cdk.Construct, id: string, props: ApplicationProps) {
+  constructor(scope: cdk.Construct, id: string, props: ApplicationStageProps) {
     super(scope, id, props);
 
-    this.application = new Application(this, 'Application', props);
+    this.application = new Application(this, 'Application', props.applicationProps);
   }
 }
 
@@ -72,8 +76,10 @@ export class Pipeline extends cdk.Stack {
 
     const prodStage = pipeline.addStage('Prod');
     const prodApplication = new ApplicationStage(this, 'Application', {
-      ...applicationProps,
-      stage: 'prod',
+      applicationProps: {
+        ...applicationProps,
+        stage: 'prod',
+      },
     })
     prodStage.addApplication(prodApplication)
 

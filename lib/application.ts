@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import { Api } from './api';
 import { Frontend } from './frontend';
 
-export interface ApplicationProps extends cdk.StackProps {
+export interface ApplicationProps {
   hostedZoneId: string
   hostedZoneName: string
   apiDomain: string
@@ -10,12 +10,12 @@ export interface ApplicationProps extends cdk.StackProps {
   stage: string
 }
 
-export class Application extends cdk.Stack {
+export class Application extends cdk.Construct {
   readonly apiUrl: cdk.CfnOutput;
   readonly websiteUrl: cdk.CfnOutput;
 
   constructor(scope: cdk.Construct, id: string, props: ApplicationProps) {
-    super(scope, id, props);
+    super(scope, id);
 
     const {
       stage,
@@ -42,9 +42,5 @@ export class Application extends cdk.Stack {
       domainName: websiteDomain,
     });
     this.websiteUrl = frontend.websiteUrl;
-
-    new cdk.CfnOutput(this, 'Stage', {
-      value: stage,
-    });
   }
 }
