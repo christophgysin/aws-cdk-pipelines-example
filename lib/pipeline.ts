@@ -74,14 +74,13 @@ export class Pipeline extends cdk.Stack {
       }),
     });
 
-    const prodStage = pipeline.addStage('Prod');
-    const prodApplication = new ApplicationStage(this, 'Application', {
+    const prodApplication = new ApplicationStage(this, 'Prod', {
       applicationProps: {
         ...applicationProps,
         stage: 'prod',
       },
     })
-    prodStage.addApplication(prodApplication)
+    const prodStage = pipeline.addApplicationStage(prodApplication);
 
     const testStage = pipeline.addStage('SmokeTest');
     testStage.addActions(new cicd.ShellScriptAction({
