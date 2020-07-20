@@ -10,7 +10,7 @@
   "scripts": {
     "bootstrap": "env CDK_NEW_BOOTSTRAP=1 npx cdk bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess",
     "build": "tsc && npm run parcel build website/index.html",
-    "parcel": "docker run -v $PWD:/var/task $(docker build -q node_modules/@aws-cdk/aws-lambda-nodejs/parcel) parcel",
+    "parcel": "docker run -v $PWD:/var/task $(docker build -q node_modules/@aws-cdk/aws-lambda-nodejs/parcel) npx parcel",
     "serve": "npm run parcel serve website/index.html",
     "watch": "tsc -w",
     "test": "jest",
@@ -18,27 +18,27 @@
     "build+deploy": "npm run build && cdk deploy"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.51.0",
+    "@aws-cdk/assert": "1.54.0",
     "@types/aws-lambda": "^8.10.59",
     "@types/jest": "^25.2.1",
     "@types/node": "10.17.5",
-    "aws-cdk": "1.51.0",
+    "aws-cdk": "1.54.0",
     "jest": "^25.5.0",
     "ts-jest": "^25.3.1",
     "ts-node": "^8.1.0",
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigatewayv2": "^1.51.0",
-    "@aws-cdk/aws-certificatemanager": "^1.51.0",
-    "@aws-cdk/aws-codecommit": "^1.51.0",
-    "@aws-cdk/aws-codepipeline": "^1.51.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.51.0",
-    "@aws-cdk/aws-route53": "^1.51.0",
-    "@aws-cdk/aws-route53-targets": "^1.51.0",
-    "@aws-cdk/aws-s3-deployment": "^1.51.0",
-    "@aws-cdk/core": "^1.51.0",
-    "@aws-cdk/pipelines": "^1.51.0",
+    "@aws-cdk/aws-apigatewayv2": "^1.54.0",
+    "@aws-cdk/aws-certificatemanager": "^1.54.0",
+    "@aws-cdk/aws-codecommit": "^1.54.0",
+    "@aws-cdk/aws-codepipeline": "^1.54.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.54.0",
+    "@aws-cdk/aws-route53": "^1.54.0",
+    "@aws-cdk/aws-route53-targets": "^1.54.0",
+    "@aws-cdk/aws-s3-deployment": "^1.54.0",
+    "@aws-cdk/core": "^1.54.0",
+    "@aws-cdk/pipelines": "^1.54.0",
     "dotenv": "^8.2.0",
     "source-map-support": "^0.5.16"
   }
