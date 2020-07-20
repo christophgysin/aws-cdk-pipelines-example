@@ -7,6 +7,7 @@ export interface ApplicationProps extends cdk.StackProps {
   hostedZoneName: string
   apiDomain: string
   websiteDomain: string
+  stage: string
 }
 
 export class Application extends cdk.Stack {
@@ -15,6 +16,10 @@ export class Application extends cdk.Stack {
 
   constructor(scope: cdk.Construct, id: string, props: ApplicationProps) {
     super(scope, id, props);
+
+    const {
+      stage,
+    } = props;
 
     const {
       hostedZoneId,
@@ -37,5 +42,9 @@ export class Application extends cdk.Stack {
       domainName: websiteDomain,
     });
     this.websiteUrl = frontend.websiteUrl;
+
+    new cdk.CfnOutput(this, 'Stage', {
+      value: stage,
+    });
   }
 }

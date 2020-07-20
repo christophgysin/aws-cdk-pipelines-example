@@ -35,7 +35,10 @@ const applicationProps = {
 
 const app = new cdk.App();
 new Repository(app, 'Repository', repositoryProps);
-new Application(app, 'Application', applicationProps)
+new Application(app, 'Application', {
+  ...applicationProps,
+  stage: 'dev',
+})
 new Pipeline(app, 'Pipeline', {
   repositoryProps,
   applicationProps,

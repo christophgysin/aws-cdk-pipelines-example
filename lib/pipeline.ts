@@ -18,7 +18,7 @@ export class ApplicationStage extends cdk.Stage {
 
 export interface PipelineProps extends cdk.StackProps {
   repositoryProps: RepositoryProps
-  applicationProps: ApplicationProps
+  applicationProps: Omit<ApplicationProps, 'stage'>
 }
 
 export class Pipeline extends cdk.Stack {
@@ -73,6 +73,7 @@ export class Pipeline extends cdk.Stack {
     const prodStage = pipeline.addStage('Prod');
     const prodApplication = new ApplicationStage(this, 'Application', {
       ...applicationProps,
+      stage: 'prod',
     })
     prodStage.addApplication(prodApplication)
 
