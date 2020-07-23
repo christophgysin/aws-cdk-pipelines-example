@@ -78,8 +78,6 @@ export class Api extends cdk.Stack {
       }),
       defaultDomainMapping: {
         domainName: customDomain,
-        // TODO: should be '/' according to docs. Bug?
-        mappingKey: '',
       },
     });
 
