@@ -10,15 +10,15 @@ pipeline will update itself on git push.
 2. Update `.env` with your domain and GitHub name
 3. Create a GitHub personal access token with scopes `repo` and `admin:repo_hook`.
 4. Store the secret in AWS SecretsManager:
-
-    $ aws secretsmanager create-secret --name github-token --secret-string=<TOKEN>
-
+```
+$ aws secretsmanager create-secret --name github-token --secret-string=<TOKEN>
+```
 4. Deploy the pipeline:
-
-    $ npm ci
-    $ npm run bootstrap
-    $ npm run build+deploy Pipeline
-
+```
+$ npm ci
+$ npm run bootstrap
+$ npm run build+deploy Pipeline
+```
 When the pipeline is deployed, it will automatically update itself to the state in your repository.
 
 ![pipeline](pipeline.png)
