@@ -1,25 +1,27 @@
 # AWS CDK pipelines example
 
-## Setup
-
-
 This repository contains an example CDK pipeline that deployes a simple
 serverless API and a static frontend served from CloudFront. Once deployed, the
 pipeline will update itself on git push.
 
-Create a repository on github, and a personal access token with scopes repo and
-admin:repo_hook. Store the secret in AWS SecretsManager:
+## Setup
+
+1. Fork this repository
+2. Update `.env` with your domain and GitHub name
+3. Create a GitHub personal access token with scopes `repo` and `admin:repo_hook`.
+4. Store the secret in AWS SecretsManager:
 
     $ aws secretsmanager create-secret --name github-token --secret-string=<TOKEN>
 
-Push the code to the repo. When the pipeline is deployed, it will automatically
-update itself to the state in that repository.
+4. Deploy the pipeline:
 
-```
-$ npm ci
-$ npm run bootstrap
-$ npm run build+deploy Pipeline
-```
+    $ npm ci
+    $ npm run bootstrap
+    $ npm run build+deploy Pipeline
+
+When the pipeline is deployed, it will automatically update itself to the state in your repository.
+
+![pipeline](pipeline.png)
 
 ## Stacks
 
