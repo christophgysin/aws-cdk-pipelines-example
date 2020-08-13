@@ -18,7 +18,7 @@ update itself to the state in that repository.
 ```
 $ npm ci
 $ npm run bootstrap
-$ npm run deploy Pipeline
+$ npm run build+deploy Pipeline
 ```
 
 ## Stacks
