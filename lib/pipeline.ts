@@ -31,12 +31,11 @@ export class Pipeline extends cdk.Stack {
 
     const {
       repositoryProps: {
-        repositoryName,
+        owner,
+        repo,
       },
       applicationProps,
     } = props;
-
-    const repository = codecommit.Repository.fromRepositoryName(this, 'Repository', repositoryName);
 
     const sourceArtifact = new codepipeline.Artifact();
     const cloudAssemblyArtifact = new codepipeline.Artifact();
@@ -45,22 +44,14 @@ export class Pipeline extends cdk.Stack {
       pipelineName: 'cdk-pipeline-example',
       cloudAssemblyArtifact,
 
-      sourceAction: new actions.CodeCommitSourceAction({
-        actionName: 'CodeCommit',
-        repository,
-        output: sourceArtifact,
-      }),
-
-      /* GITHUB
       sourceAction: new actions.GitHubSourceAction({
         actionName: 'GitHub',
-        owner: 'GITHUB_OWNER',
-        repo: 'GITHUB_REPO',
-        oauthToken: cdk.SecretValue.secretsManager('GITHUB_TOKEN_NAME'),
+        owner,
+        repo,
+        oauthToken: cdk.SecretValue.secretsManager('github-token'),
         trigger: actions.GitHubTrigger.POLL,
         output: sourceArtifact,
       }),
-      */
 
       synthAction: cicd.SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
