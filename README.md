@@ -13,7 +13,7 @@ pipeline will update itself on git push.
 ```
 $ aws secretsmanager create-secret --name github-token --secret-string=<TOKEN>
 ```
-4. Deploy the pipeline:
+5. Deploy the pipeline:
 ```
 $ npm ci
 $ npm run bootstrap
