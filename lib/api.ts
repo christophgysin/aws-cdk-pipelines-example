@@ -1,10 +1,7 @@
-import * as path from 'path'
-import * as fs from 'fs'
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as apigwv2 from '@aws-cdk/aws-apigatewayv2';
 import * as lambda from '@aws-cdk/aws-lambda-nodejs';
 import * as route53 from '@aws-cdk/aws-route53';
-import * as targets from '@aws-cdk/aws-route53-targets';
 import * as cdk from '@aws-cdk/core';
 
 // TODO: Remove this once it is supported upstream:

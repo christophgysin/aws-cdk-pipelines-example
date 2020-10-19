@@ -70,11 +70,10 @@ export class Frontend extends cdk.Stack {
             s3BucketSource: websiteBucket,
             originAccessIdentity: oai,
           },
-          behaviors : [
+          behaviors: [
             {
               allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD,
               cachedMethods: cloudfront.CloudFrontAllowedCachedMethods.GET_HEAD,
-              compress: true,
               forwardedValues: {
                 queryString: false,
                 cookies: {
