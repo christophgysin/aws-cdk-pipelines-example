@@ -4,7 +4,6 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as targets from '@aws-cdk/aws-route53-targets';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as assets from '@aws-cdk/aws-s3-assets';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as cdk from '@aws-cdk/core';
 
