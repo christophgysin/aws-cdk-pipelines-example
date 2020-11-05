@@ -4,6 +4,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as targets from '@aws-cdk/aws-route53-targets';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as assets from '@aws-cdk/aws-s3-assets';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as cdk from '@aws-cdk/core';
 
@@ -97,7 +98,18 @@ export class Frontend extends cdk.Stack {
     });
 
     new s3deploy.BucketDeployment(this, 'DeployWebsite', {
-      sources: [s3deploy.Source.asset('./dist')],
+      sources: [
+        s3deploy.Source.asset('./website', {
+          bundling: {
+            image: cdk.BundlingDockerImage.fromAsset('node_modules/@aws-cdk/aws-lambda-nodejs/parcel'),
+            command: [
+              'npx', 'parcel', 'build',
+              '/asset-input/index.html',
+              '--out-dir', '/asset-output',
+            ],
+          },
+        }),
+      ],
       destinationBucket: websiteBucket,
       distribution,
       distributionPaths: ['/index.html'],

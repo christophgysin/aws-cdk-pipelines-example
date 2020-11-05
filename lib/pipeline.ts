@@ -56,9 +56,6 @@ export class Pipeline extends cdk.Stack {
       synthAction: cicd.SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
         cloudAssemblyArtifact,
-
-        buildCommand: 'npm run build',
-        synthCommand: 'npx cdk synth --verbose',
         environment: {
           privileged: true,
         },
