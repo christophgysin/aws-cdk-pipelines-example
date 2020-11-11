@@ -102,9 +102,7 @@ export class Frontend extends cdk.Stack {
           bundling: {
             image: cdk.BundlingDockerImage.fromAsset('node_modules/@aws-cdk/aws-lambda-nodejs/parcel'),
             command: [
-              'npx', 'parcel', 'build',
-              '/asset-input/index.html',
-              '--out-dir', '/asset-output',
+              'npx', 'parcel', 'build', 'index.html', '--out-dir', '/asset-output',
             ],
           },
         }),
