@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as iam from '@aws-cdk/aws-iam';
@@ -100,7 +101,7 @@ export class Frontend extends cdk.Stack {
       sources: [
         s3deploy.Source.asset('./website', {
           bundling: {
-            image: cdk.BundlingDockerImage.fromAsset('node_modules/@aws-cdk/aws-lambda-nodejs/parcel'),
+            image: cdk.BundlingDockerImage.fromAsset(path.join(__dirname, '../node_modules/@aws-cdk/aws-lambda-nodejs/parcel')),
             command: [
               'npx', 'parcel', 'build', 'index.html', '--out-dir', '/asset-output',
             ],
